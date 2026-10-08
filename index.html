@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi tienda</title>
+  <style>
+    /* ==============================
+       PALETA ERAS TOUR
+       Cada color sale de una era; los textos usan
+       tonos oscuros sobre fondos claros (y al revés)
+       para que se lean bien.
+    ================================ */
+
+    :root {
+      --fondo: #fdf3f9;          /* Lover: rosa muy suave */
+      --tinta: #2a1a3a;          /* texto principal: ciruela oscuro */
+      --tinta-suave: #5b4a6b;    /* texto secundario */
+      --borde: #f0c4dc;          /* Lover: rosa */
+      --medianoche: #14204a;     /* Midnights */
+      --speaknow: #6b3fa0;       /* Speak Now */
+      --red: #a4161f;            /* Red */
+      --showgirl: #0b6e70;       /* Showgirl: verde azulado */
+      --oro: #f2c75c;            /* Fearless */
+    }
+
+    body {
+      font-family: 'Poppins', system-ui, Arial, sans-serif;
+      background-color: var(--fondo);
+      color: var(--tinta);
+      padding: 20px;
+      margin: 0;
+      text-align: center;
+    }
+
+    /* ===== HEADER ===== */
+
+    header.header {
+      position: relative;
+      padding: 44px 16px 26px;
+      margin-bottom: 0;
+      border-radius: 14px 14px 0 0;
+      color: #fff;
+      background: linear-gradient(100deg,
+        #0f8b8d 0%, #e8b94a 12%, #8e5bb5 24%, #b3202a 36%,
+        #8fd3f4 48%, #111 58%, #f7b6d2 70%, #9a9a94 80%,
+        #a0623a 88%, #14204a 95%, #ff7a1a 100%);
+    }
+
+    /* capa oscura para que el texto blanco siempre se lea */
+    header.header::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: rgba(20, 10, 30, 0.52);
+    }
+
+    header.header > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    h1,
+    header.header h1 {
+      color: #fff !important;
+      margin: 0 0 8px;
+      font-family: 'Pinyon Script', cursive;
+      font-weight: 400;
+      font-size: clamp(2.6rem, 9vw, 5.2rem);
+      line-height: 1.05;
+      text-shadow: 0 2px 16px rgba(0, 0, 0, 0.6);
+    }
+
+    header.header h1 small {
+      display: block;
+      margin-top: 6px;
+      font-family: 'Limelight', serif;
+      font-size: 0.3em;
+      letter-spacing: 0.12em;
+      color: var(--oro) !important;
+    }
+
+    .slogan,
+    header.header .slogan {
+      color: #fff !important;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 600;
+      font-size: clamp(1.15rem, 3vw, 1.6rem);
+      margin: 12px 0 22px;
+      text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    /* ===== BOTONES DE ERAS ===== */
+
+    .eras {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 6px 4px 14px;
+    }
+
+    .era {
+      border: 2px solid transparent;
+      border-radius: 999px;
+      padding: 9px 18px;
+      cursor: pointer;
+      font-size: 1rem;
+      white-space: nowrap;
+      transition: transform 0.15s;
+    }
+
+    .era:hover,
+    .era:focus-visible {
+      transform: translateY(-3px) scale(1.05);
+      outline: 2px solid #fff;
+      outline-offset: 2px;
+    }
+
+    .era.activa {
+      outline: 3px solid #fff;
+      outline-offset: 2px;
+    }
+
+    .e-debut     { background: #2fa59b; color: #fff;    font-family: 'Playfair Display', serif; font-style: italic; }
+    .e-fearless  { background: #e8b94a; color: #4a3300; font-family: 'Cinzel', serif; }
+    .e-speaknow  { background: #7d4fa8; color: #fbe9ff; font-family: 'Pinyon Script', cursive; font-size: 1.25rem; }
+    .e-red       { background: #a4161f; color: #f3e3d0; font-family: 'Playfair Display', serif; font-style: italic; }
+    .e-1989      { background: #a9dcf3; color: #14405c; font-family: 'Poppins', sans-serif; font-weight: 600; }
+    .e-rep       { background: #0d0d0d; color: #ddd;    font-family: 'UnifrakturCook', cursive; border-color: #444; }
+    .e-lover     { background: linear-gradient(90deg, #f7b6d2, #a8d8f0); color: #5a2a4a; font-family: 'Pacifico', cursive; }
+    .e-folklore  { background: #d9d6cf; color: #444;    font-family: 'Cormorant Garamond', serif; font-style: italic; }
+    .e-evermore  { background: #a0623a; color: #fff0d9; font-family: 'Cormorant Garamond', serif; font-style: italic; }
+    .e-midnights { background: #14204a; color: #c9d4ff; font-family: 'Josefin Sans', sans-serif; letter-spacing: 0.06em; }
+    .e-ttpd      { background: #efe6d6; color: #2b2b2b; font-family: 'Special Elite', monospace; border-color: #2b2b2b; }
+    .e-showgirl  { background: linear-gradient(90deg, #ff7a1a, #0f8b8d); color: #fff; font-family: 'Limelight', serif; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5); }
+
+    /* ===== BENEFICIOS ===== */
+
+    .beneficios {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      flex-wrap: wrap;
+      background-color: var(--medianoche);
+      color: #fff;
+      padding: 14px;
+      margin-bottom: 30px;
+      border-radius: 0 0 14px 14px;
+    }
+
+    .beneficios span {
+      font-size: 14px;
+    }
+
+    /* ===== CATÁLOGO (cuadrícula 6 x 2) ===== */
+
+    #productos {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 15px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* Variables de cada era: fondo, texto, tipografía y botón */
+    .producto {
+      --bg: #fff;
+      --fg: #2a1a3a;
+      --btn-bg: #6b3fa0;
+      --btn-fg: #fff;
+      --titulo: 'Fraunces', serif;
+      --cuerpo: 'Poppins', system-ui, sans-serif;
+
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--cuerpo);
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      border-radius: 8px;
+      padding: 10px;
+      width: auto;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 4px 14px rgba(42, 26, 58, 0.18);
+    }
+
+    .producto[data-era="debut"] {
+      --bg: #1f7f77; --fg: #ffffff; --btn-bg: #ffffff; --btn-fg: #1f7f77;
+      --titulo: 'Playfair Display', serif;
+    }
+    .producto[data-era="fearless"] {
+      --bg: #e8b94a; --fg: #3b2800; --btn-bg: #3b2800; --btn-fg: #f6dc9a;
+      --titulo: 'Cinzel', serif;
+    }
+    .producto[data-era="speak-now"] {
+      --bg: #6f3f9c; --fg: #fbe9ff; --btn-bg: #fbe9ff; --btn-fg: #4b2470;
+      --titulo: 'Pinyon Script', cursive;
+    }
+    .producto[data-era="red"] {
+      --bg: #a4161f; --fg: #fbeadb; --btn-bg: #fbeadb; --btn-fg: #7d0f17;
+      --titulo: 'Playfair Display', serif;
+    }
+    .producto[data-era="1989"] {
+      --bg: #a9dcf3; --fg: #12384f; --btn-bg: #12384f; --btn-fg: #e3f5ff;
+      --titulo: 'Poppins', sans-serif;
+    }
+    .producto[data-era="reputation"] {
+      --bg: #0d0d0d; --fg: #e9e9e9; --btn-bg: #e9e9e9; --btn-fg: #0d0d0d;
+      --titulo: 'UnifrakturCook', cursive;
+    }
+    .producto[data-era="lover"] {
+      --bg: linear-gradient(160deg, #f7b6d2, #a8d8f0); --fg: #4a1f3d; --btn-bg: #4a1f3d; --btn-fg: #ffeaf5;
+      --titulo: 'Pacifico', cursive;
+    }
+    .producto[data-era="folklore"] {
+      --bg: #d9d6cf; --fg: #34322e; --btn-bg: #34322e; --btn-fg: #f1efe9;
+      --titulo: 'Cormorant Garamond', serif;
+    }
+    .producto[data-era="evermore"] {
+      --bg: #8a4f2a; --fg: #fff0d9; --btn-bg: #fff0d9; --btn-fg: #5e3318;
+      --titulo: 'Cormorant Garamond', serif;
+    }
+    .producto[data-era="midnights"] {
+      --bg: #14204a; --fg: #dbe3ff; --btn-bg: #dbe3ff; --btn-fg: #14204a;
+      --titulo: 'Josefin Sans', sans-serif;
+    }
+    .producto[data-era="ttpd"] {
+      --bg: #efe6d6; --fg: #2b2b2b; --btn-bg: #2b2b2b; --btn-fg: #efe6d6;
+      --titulo: 'Special Elite', monospace;
+      --cuerpo: 'Special Elite', monospace;
+      border: 2px solid #2b2b2b;
+    }
+    .producto[data-era="showgirl"] {
+      --bg: linear-gradient(160deg, #d9570a, #0b6e70); --fg: #ffffff; --btn-bg: #ffffff; --btn-fg: #0b5557;
+      --titulo: 'Limelight', serif;
+    }
+
+    /* El fondo puede ser color o degradé */
+    .producto { background: var(--bg); }
+
+    .producto img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+
+    .sin-imagen {
+      height: 140px;
+      display: grid;
+      place-items: center;
+      font-size: 3.5rem;
+      background: rgba(255, 255, 255, 0.28);
+      border-radius: 4px;
+    }
+
+    .producto h3 {
+      margin: 12px 0 8px;
+      color: var(--fg);
+      font-family: var(--titulo);
+      font-weight: 400;
+      font-size: 1.15rem;
+      line-height: 1.2;
+    }
+
+    /* Tipografías script: necesitan más tamaño para leerse */
+    .producto[data-era="speak-now"] h3 { font-size: 1.6rem; }
+    .producto[data-era="lover"] h3 { font-size: 1.05rem; }
+    .producto[data-era="reputation"] h3 { font-size: 1.4rem; }
+
+    .descripcion {
+      font-size: 14px;
+      color: var(--fg);
+      min-height: 42px;
+      flex-grow: 1;
+    }
+
+    .precio {
+      font-size: 18px;
+      font-weight: bold;
+      color: var(--fg);
+      margin: 8px 0;
+    }
+
+    /* ===== BOTONES ===== */
+
+    .producto button {
+      background-color: var(--btn-bg);
+      color: var(--btn-fg);
+      font-family: var(--cuerpo);
+      font-weight: 600;
+      border: none;
+      padding: 9px 12px;
+      margin-top: 5px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .producto button:hover {
+      opacity: 0.85;
+    }
+
+    /* Cuadrícula adaptable: 6 → 4 → 3 → 2 → 1 columnas */
+    @media (max-width: 1250px) { #productos { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+    @media (max-width: 900px)  { #productos { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    @media (max-width: 640px)  { #productos { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 380px)  { #productos { grid-template-columns: 1fr; } }
+
+    /* ===== CARRITO ===== */
+
+    .carrito {
+      margin-top: 35px;
+      padding: 20px;
+      background: #fff;
+      border: 2px solid var(--borde);
+      border-radius: 8px;
+      text-align: left;
+      display: inline-block;
+      min-width: 320px;
+      color: var(--tinta);
+    }
+
+    .carrito h2 {
+      margin-top: 0;
+      color: var(--medianoche);
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+    }
+
+    #lista-carrito {
+      padding-left: 20px;
+    }
+
+    #lista-carrito li {
+      margin-bottom: 8px;
+    }
+
+    .resumen {
+      border-top: 1px solid var(--borde);
+      margin-top: 15px;
+      padding-top: 10px;
+    }
+
+    .total {
+      font-size: 19px;
+    }
+
+    /* Botón vaciar */
+
+    .vaciar {
+      background-color: var(--red);
+      border: none;
+      color: #fff;
+      padding: 9px 12px;
+      margin-top: 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    /* Botón finalizar */
+
+    .finalizar {
+      background-color: var(--showgirl);
+      border: none;
+      color: #fff;
+      padding: 9px 12px;
+      margin-top: 10px;
+      margin-left: 5px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .vaciar:hover,
+    .finalizar:hover {
+      opacity: 0.85;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .era { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <!DOCTYPE html>
+  <html lang="es">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Eras &amp; Grooves | Vinilos de Taylor Swift</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Pinyon+Script&family=Playfair+Display:ital,wght@1,700&family=Poppins:wght@400;600&family=UnifrakturCook:wght@700&family=Pacifico&family=Cormorant+Garamond:ital,wght@1,600&family=Josefin+Sans:wght@600&family=Special+Elite&family=Limelight&family=Fraunces:ital,wght@1,700&display=swap" rel="stylesheet">
+  <style>
+  /* ==============================
+     PALETA ERAS TOUR
+     Cada color sale de una era; los textos usan
+     tonos oscuros sobre fondos claros (y al revés)
+     para que se lean bien.
+  ================================ */
+
+  :root {
+    --fondo: #fdf3f9;          /* Lover: rosa muy suave */
+    --tinta: #2a1a3a;          /* texto principal: ciruela oscuro */
+    --tinta-suave: #5b4a6b;    /* texto secundario */
+    --borde: #f0c4dc;          /* Lover: rosa */
+    --medianoche: #14204a;     /* Midnights */
+    --speaknow: #6b3fa0;       /* Speak Now */
+    --red: #a4161f;            /* Red */
+    --showgirl: #0b6e70;       /* Showgirl: verde azulado */
+    --oro: #f2c75c;            /* Fearless */
+  }
+
+  body {
+    font-family: 'Poppins', system-ui, Arial, sans-serif;
+    background-color: var(--fondo);
+    color: var(--tinta);
+    padding: 20px;
+    margin: 0;
+    text-align: center;
+  }
+
+  /* ===== HEADER ===== */
+
+  header.header {
+    position: relative;
+    padding: 44px 16px 26px;
+    margin-bottom: 0;
+    border-radius: 14px 14px 0 0;
+    color: #fff;
+    background: linear-gradient(100deg,
+      #0f8b8d 0%, #e8b94a 12%, #8e5bb5 24%, #b3202a 36%,
+      #8fd3f4 48%, #111 58%, #f7b6d2 70%, #9a9a94 80%,
+      #a0623a 88%, #14204a 95%, #ff7a1a 100%);
+  }
+
+  /* capa oscura para que el texto blanco siempre se lea */
+  header.header::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: rgba(20, 10, 30, 0.52);
+  }
+
+  header.header > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  h1,
+  header.header h1 {
+    color: #fff !important;
+    margin: 0 0 8px;
+    font-family: 'Pinyon Script', cursive;
+    font-weight: 400;
+    font-size: clamp(2.6rem, 9vw, 5.2rem);
+    line-height: 1.05;
+    text-shadow: 0 2px 16px rgba(0, 0, 0, 0.6);
+  }
+
+  header.header h1 small {
+    display: block;
+    margin-top: 6px;
+    font-family: 'Limelight', serif;
+    font-size: 0.3em;
+    letter-spacing: 0.12em;
+    color: var(--oro) !important;
+  }
+
+  .slogan,
+  header.header .slogan {
+    color: #fff !important;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 600;
+    font-size: clamp(1.15rem, 3vw, 1.6rem);
+    margin: 12px 0 22px;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+  }
+
+  /* ===== BOTONES DE ERAS ===== */
+
+  .eras {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 6px 4px 14px;
+  }
+
+  .era {
+    border: 2px solid transparent;
+    border-radius: 999px;
+    padding: 9px 18px;
+    cursor: pointer;
+    font-size: 1rem;
+    white-space: nowrap;
+    transition: transform 0.15s;
+  }
+
+  .era:hover,
+  .era:focus-visible {
+    transform: translateY(-3px) scale(1.05);
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+  }
+
+  .era.activa {
+    outline: 3px solid #fff;
+    outline-offset: 2px;
+  }
+
+  .e-debut     { background: #2fa59b; color: #fff;    font-family: 'Playfair Display', serif; font-style: italic; }
+  .e-fearless  { background: #e8b94a; color: #4a3300; font-family: 'Cinzel', serif; }
+  .e-speaknow  { background: #7d4fa8; color: #fbe9ff; font-family: 'Pinyon Script', cursive; font-size: 1.25rem; }
+  .e-red       { background: #a4161f; color: #f3e3d0; font-family: 'Playfair Display', serif; font-style: italic; }
+  .e-1989      { background: #a9dcf3; color: #14405c; font-family: 'Poppins', sans-serif; font-weight: 600; }
+  .e-rep       { background: #0d0d0d; color: #ddd;    font-family: 'UnifrakturCook', cursive; border-color: #444; }
+  .e-lover     { background: linear-gradient(90deg, #f7b6d2, #a8d8f0); color: #5a2a4a; font-family: 'Pacifico', cursive; }
+  .e-folklore  { background: #d9d6cf; color: #444;    font-family: 'Cormorant Garamond', serif; font-style: italic; }
+  .e-evermore  { background: #a0623a; color: #fff0d9; font-family: 'Cormorant Garamond', serif; font-style: italic; }
+  .e-midnights { background: #14204a; color: #c9d4ff; font-family: 'Josefin Sans', sans-serif; letter-spacing: 0.06em; }
+  .e-ttpd      { background: #efe6d6; color: #2b2b2b; font-family: 'Special Elite', monospace; border-color: #2b2b2b; }
+  .e-showgirl  { background: linear-gradient(90deg, #ff7a1a, #0f8b8d); color: #fff; font-family: 'Limelight', serif; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5); }
+
+  /* ===== BENEFICIOS ===== */
+
+  .beneficios {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    background-color: var(--medianoche);
+    color: #fff;
+    padding: 14px;
+    margin-bottom: 30px;
+    border-radius: 0 0 14px 14px;
+  }
+
+  .beneficios span {
+    font-size: 14px;
+  }
+
+  /* ===== CATÁLOGO (cuadrícula 6 x 2) ===== */
+
+  #productos {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 15px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  /* Variables de cada era: fondo, texto, tipografía y botón */
+  .producto {
+    --bg: #fff;
+    --fg: #2a1a3a;
+    --btn-bg: #6b3fa0;
+    --btn-fg: #fff;
+    --titulo: 'Fraunces', serif;
+    --cuerpo: 'Poppins', system-ui, sans-serif;
+
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--cuerpo);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    padding: 10px;
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 14px rgba(42, 26, 58, 0.18);
+  }
+
+  .producto[data-era="debut"] {
+    --bg: #1f7f77; --fg: #ffffff; --btn-bg: #ffffff; --btn-fg: #1f7f77;
+    --titulo: 'Playfair Display', serif;
+  }
+  .producto[data-era="fearless"] {
+    --bg: #e8b94a; --fg: #3b2800; --btn-bg: #3b2800; --btn-fg: #f6dc9a;
+    --titulo: 'Cinzel', serif;
+  }
+  .producto[data-era="speak-now"] {
+    --bg: #6f3f9c; --fg: #fbe9ff; --btn-bg: #fbe9ff; --btn-fg: #4b2470;
+    --titulo: 'Pinyon Script', cursive;
+  }
+  .producto[data-era="red"] {
+    --bg: #a4161f; --fg: #fbeadb; --btn-bg: #fbeadb; --btn-fg: #7d0f17;
+    --titulo: 'Playfair Display', serif;
+  }
+  .producto[data-era="1989"] {
+    --bg: #a9dcf3; --fg: #12384f; --btn-bg: #12384f; --btn-fg: #e3f5ff;
+    --titulo: 'Poppins', sans-serif;
+  }
+  .producto[data-era="reputation"] {
+    --bg: #0d0d0d; --fg: #e9e9e9; --btn-bg: #e9e9e9; --btn-fg: #0d0d0d;
+    --titulo: 'UnifrakturCook', cursive;
+  }
+  .producto[data-era="lover"] {
+    --bg: linear-gradient(160deg, #f7b6d2, #a8d8f0); --fg: #4a1f3d; --btn-bg: #4a1f3d; --btn-fg: #ffeaf5;
+    --titulo: 'Pacifico', cursive;
+  }
+  .producto[data-era="folklore"] {
+    --bg: #d9d6cf; --fg: #34322e; --btn-bg: #34322e; --btn-fg: #f1efe9;
+    --titulo: 'Cormorant Garamond', serif;
+  }
+  .producto[data-era="evermore"] {
+    --bg: #8a4f2a; --fg: #fff0d9; --btn-bg: #fff0d9; --btn-fg: #5e3318;
+    --titulo: 'Cormorant Garamond', serif;
+  }
+  .producto[data-era="midnights"] {
+    --bg: #14204a; --fg: #dbe3ff; --btn-bg: #dbe3ff; --btn-fg: #14204a;
+    --titulo: 'Josefin Sans', sans-serif;
+  }
+  .producto[data-era="ttpd"] {
+    --bg: #efe6d6; --fg: #2b2b2b; --btn-bg: #2b2b2b; --btn-fg: #efe6d6;
+    --titulo: 'Special Elite', monospace;
+    --cuerpo: 'Special Elite', monospace;
+    border: 2px solid #2b2b2b;
+  }
+  .producto[data-era="showgirl"] {
+    --bg: linear-gradient(160deg, #d9570a, #0b6e70); --fg: #ffffff; --btn-bg: #ffffff; --btn-fg: #0b5557;
+    --titulo: 'Limelight', serif;
+  }
+
+  /* El fondo puede ser color o degradé */
+  .producto { background: var(--bg); }
+
+  .producto img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+
+  .sin-imagen {
+    height: 140px;
+    display: grid;
+    place-items: center;
+    font-size: 3.5rem;
+    background: rgba(255, 255, 255, 0.28);
+    border-radius: 4px;
+  }
+
+  .producto h3 {
+    margin: 12px 0 8px;
+    color: var(--fg);
+    font-family: var(--titulo);
+    font-weight: 400;
+    font-size: 1.15rem;
+    line-height: 1.2;
+  }
+
+  /* Tipografías script: necesitan más tamaño para leerse */
+  .producto[data-era="speak-now"] h3 { font-size: 1.6rem; }
+  .producto[data-era="lover"] h3 { font-size: 1.05rem; }
+  .producto[data-era="reputation"] h3 { font-size: 1.4rem; }
+
+  .descripcion {
+    font-size: 14px;
+    color: var(--fg);
+    min-height: 42px;
+    flex-grow: 1;
+  }
+
+  .precio {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--fg);
+    margin: 8px 0;
+  }
+
+  /* ===== BOTONES ===== */
+
+  .producto button {
+    background-color: var(--btn-bg);
+    color: var(--btn-fg);
+    font-family: var(--cuerpo);
+    font-weight: 600;
+    border: none;
+    padding: 9px 12px;
+    margin-top: 5px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .producto button:hover {
+    opacity: 0.85;
+  }
+
+  /* Cuadrícula adaptable: 6 → 4 → 3 → 2 → 1 columnas */
+  @media (max-width: 1250px) { #productos { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  @media (max-width: 900px)  { #productos { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (max-width: 640px)  { #productos { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 380px)  { #productos { grid-template-columns: 1fr; } }
+
+  /* ===== CARRITO ===== */
+
+  .carrito {
+    margin-top: 35px;
+    padding: 20px;
+    background: #fff;
+    border: 2px solid var(--borde);
+    border-radius: 8px;
+    text-align: left;
+    display: inline-block;
+    min-width: 320px;
+    color: var(--tinta);
+  }
+
+  .carrito h2 {
+    margin-top: 0;
+    color: var(--medianoche);
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+  }
+
+  #lista-carrito {
+    padding-left: 20px;
+  }
+
+  #lista-carrito li {
+    margin-bottom: 8px;
+  }
+
+  .resumen {
+    border-top: 1px solid var(--borde);
+    margin-top: 15px;
+    padding-top: 10px;
+  }
+
+  .total {
+    font-size: 19px;
+  }
+
+  /* Botón vaciar */
+
+  .vaciar {
+    background-color: var(--red);
+    border: none;
+    color: #fff;
+    padding: 9px 12px;
+    margin-top: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  /* Botón finalizar */
+
+  .finalizar {
+    background-color: var(--showgirl);
+    border: none;
+    color: #fff;
+    padding: 9px 12px;
+    margin-top: 10px;
+    margin-left: 5px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .vaciar:hover,
+  .finalizar:hover {
+    opacity: 0.85;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .era { transition: none; }
+  }
+
+  </style>
+  </head>
+  <body>
+
+  <header class="header">
+    <h1>Eras &amp; Grooves
+      <small>VINILOS DE TAYLOR SWIFT</small>
+    </h1>
+
+    <p class="slogan">Cada era tiene su disco. Encuentra la tuya 💿✨</p>
+
+    <nav class="eras" aria-label="Filtrar por era">
+      <button class="era e-debut" data-era="debut">Taylor Swift</button>
+      <button class="era e-fearless" data-era="fearless">Fearless</button>
+      <button class="era e-speaknow" data-era="speak-now">Speak Now</button>
+      <button class="era e-red" data-era="red">Red</button>
+      <button class="era e-1989" data-era="1989">1989</button>
+      <button class="era e-rep" data-era="reputation">reputation</button>
+      <button class="era e-lover" data-era="lover">Lover</button>
+      <button class="era e-folklore" data-era="folklore">folklore</button>
+      <button class="era e-evermore" data-era="evermore">evermore</button>
+      <button class="era e-midnights" data-era="midnights">Midnights</button>
+      <button class="era e-ttpd" data-era="ttpd">The Tortured Poets Department</button>
+      <button class="era e-showgirl" data-era="showgirl">The Life of a Showgirl</button>
+    </nav>
+
+    <div class="beneficios">
+      <span>🚚 Envíos en Bogotá</span>
+      <span>🔒 Compra segura</span>
+      <span>📦 Seguimiento de pedido</span>
+    </div>
+  </header>
+
+  <div id="productos"></div>
+
+  <div class="carrito">
+    <h2>🧾 Carrito de Compras</h2>
+
+    <ul id="lista-carrito"></ul>
+
+    <div class="resumen">
+      <p>
+        Envío: <strong>Gratis</strong>
+      </p>
+
+      <p class="total">
+        Total: $<span id="total">0</span>
+      </p>
+    </div>
+
+    <button class="vaciar" onclick="vaciarCarrito()">
+      🧼 Vaciar Carrito
+    </button>
+
+    <button class="finalizar" onclick="finalizarCompra()">
+      ✅ Finalizar Compra
+    </button>
+  </div>
+
+
+  <script>
+  const productos = [
+    {
+      id: 1,
+      era: "debut",
+      nombre: "Taylor Swift",
+      descripcion: "Donde empezó todo: country, guitarra y sueños. 💚",
+      precio: 150000,
+      imagen: "http://64.media.tumblr.com/00db750fa90c7c6f0ed0559d552e0ef8/74ec579b0269624e-cb/s1280x1920/f912c80900d91b12ad6cba3ea86e777161e017ab.jpg"
+    },
+    {
+      id: 2,
+      era: "fearless",
+      nombre: "Fearless",
+      descripcion: "Historias de cuento de hadas en dorado. 💛",
+      precio: 150000,
+      imagen: "https://i.pinimg.com/474x/15/e9/e2/15e9e2a961b7afa76abb1984bdc598ac.jpg"
+    },
+    {
+      id: 3,
+      era: "speak-now",
+      nombre: "Speak Now",
+      descripcion: "Escrito por ella sola, con magia morada. 💜",
+      precio: 150000,
+      imagen: "https://musicmayhemmagazine.com/wp-content/uploads/2023/05/Taylor-Swift-Photo-Courtesy-of-Terence-Rushin_Getty-Images-for-TS-4.jpg"
+    },
+    {
+      id: 4,
+      era: "red",
+      nombre: "Red",
+      descripcion: "Bufanda, otoño y corazones rotos. ❤️",
+      precio: 150000,
+      imagen: "https://media.tenor.com/VcG4iusBcewAAAAe/red-red-taylors-version.png"
+    },
+    {
+      id: 5,
+      era: "1989",
+      nombre: "1989",
+      descripcion: "Pop, nostalgia y clásicos que nunca pasan de moda. ✨",
+      precio: 150000,
+      imagen: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRG3LAqFI5W9uxjYe0RBVlea015RCTG2-rh-NpFhDJNonOxonNwYpWO60k&s=10"
+    },
+    {
+      id: 6,
+      era: "reputation",
+      nombre: "Reputation",
+      descripcion: "Un álbum icónico para los verdaderos swifties. 🐍✨",
+      precio: 150000,
+      imagen: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6UMS2gVOEcDZ6seF-UB-81ORsBgaMK8Ek2NwA4d3l6ILl831KhrChA_E&s=10"
+    },
+    {
+      id: 7,
+      era: "lover",
+      nombre: "Lover",
+      descripcion: "Rosa, celeste y mucho amor. 🩷💙",
+      precio: 150000,
+      imagen: "https://i.pinimg.com/564x/23/5c/99/235c99ba42a6a124e4c8aed6fd3f7c0f.jpg"
+    },
+    {
+      id: 8,
+      era: "folklore",
+      nombre: "Fólklore",
+      descripcion: "Un clásico que no puede faltar en tu colección. 🤎",
+      precio: 150000,
+      imagen: "https://i.pinimg.com/736x/b8/59/b6/b859b690060da5dd85364da358978742.jpg"
+    },
+    {
+      id: 9,
+      era: "evermore",
+      nombre: "Evermore",
+      descripcion: "La hermana de folklore, para invierno en el bosque. 🍂",
+      precio: 150000,
+      imagen: "https://64.media.tumblr.com/a288f47a3070d3d498a244b3741e3ed2/c36ed109ac6256ab-cd/s1280x1920/23db2ebc9c073b0839a89ebeda9c5bfdb4cbab8b.pnj"
+    },
+    {
+      id: 10,
+      era: "midnights",
+      nombre: "Midnights",
+      descripcion: "Noches, recuerdos y canciones que se sienten diferente. 💙",
+      precio: 150000,
+      imagen: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrM-L70Dxaokt-Lq85hhbE6mEKvkMjxVm08OUObInvPKBwCxf6kyLa5LA&s=10"
+    },
+    {
+      id: 11,
+      era: "ttpd",
+      nombre: "The Tortured Poets Department",
+      descripcion: "Poesía, drama y letras para subrayar. 🖋️",
+      precio: 150000,
+      imagen: "https://i.pinimg.com/736x/63/f6/e6/63f6e61c01020ae1b306e561f62db235.jpg"
+    },
+    {
+      id: 12,
+      era: "showgirl",
+      nombre: "The Life of a Showgirl: The Encore",
+      descripcion: "Brilla con uno de los álbumes más esperados. 💿💖",
+      precio: 150000,
+      imagen: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfnMXgSRD4CT6blkbVuJ7CywiPoW0_tU-EZca-udL_H74dA3FgUH2a9Ng&s=10"
+    }
+  ];
+
+
+  /* ==============================
+     CARRITO
+  ================================ */
+
+  const carrito = [];
+
+  const contenedorProductos = document.getElementById("productos");
+  const listaCarrito = document.getElementById("lista-carrito");
+  const totalCarrito = document.getElementById("total");
+
+  function formatoCOP(valor) {
+    return valor.toLocaleString("es-CO", {
+      style: "currency",
+      currency: "COP",
+      minimumFractionDigits: 0
+    });
+  }
+
+
+  /* ==============================
+     MOSTRAR PRODUCTOS (con filtro por era)
+  ================================ */
+
+  function mostrarProductos(era = "todas") {
+
+    contenedorProductos.innerHTML = "";
+
+    const lista = era === "todas"
+      ? productos
+      : productos.filter(p => p.era === era);
+
+    lista.forEach(prod => {
+
+      const div = document.createElement("div");
+      div.className = "producto";
+      div.dataset.era = prod.era;
+
+      div.innerHTML = `
+        ${prod.imagen
+          ? `<img src="${prod.imagen}" alt="${prod.nombre}">`
+          : `<div class="sin-imagen">💿</div>`}
+
+        <h3>${prod.nombre}</h3>
+
+        <p class="descripcion">${prod.descripcion}</p>
+
+        <p class="precio">${formatoCOP(prod.precio)}</p>
+
+        <button onclick="agregarAlCarrito(${prod.id})">
+          Agregar al carrito
+        </button>
+      `;
+
+      contenedorProductos.appendChild(div);
+
+    });
+
+  }
+
+  function filtrarPorEra(era) {
+    mostrarProductos(era);
+  }
+
+
+  /* ==============================
+     AGREGAR AL CARRITO
+  ================================ */
+
+  function agregarAlCarrito(id) {
+
+    const productoExistente = carrito.find(p => p.id === id);
+
+    if (productoExistente) {
+      productoExistente.cantidad++;
+    } else {
+      const producto = productos.find(p => p.id === id);
+      carrito.push({ ...producto, cantidad: 1 });
+    }
+
+    actualizarCarrito();
+
+  }
+
+
+  /* ==============================
+     ACTUALIZAR CARRITO
+  ================================ */
+
+  function actualizarCarrito() {
+
+    listaCarrito.innerHTML = "";
+
+    let total = 0;
+    let totalItems = 0;
+
+    carrito.forEach(item => {
+
+      const li = document.createElement("li");
+      const subtotal = item.precio * item.cantidad;
+
+      li.textContent = `${item.nombre} x${item.cantidad} — ${formatoCOP(subtotal)}`;
+
+      listaCarrito.appendChild(li);
+
+      total += subtotal;
+      totalItems += item.cantidad;
+
+    });
+
+    totalCarrito.textContent = total.toLocaleString("es-CO");
+
+    actualizarTituloCarrito(totalItems);
+
+  }
+
+
+  /* ==============================
+     CONTADOR DEL CARRITO
+  ================================ */
+
+  function actualizarTituloCarrito(cantidad) {
+    const titulo = document.querySelector(".carrito h2");
+    titulo.textContent = `🧾 Carrito de Compras (${cantidad})`;
+  }
+
+
+  /* ==============================
+     VACIAR CARRITO
+  ================================ */
+
+  function vaciarCarrito() {
+
+    if (carrito.length === 0) {
+      alert("🛒 El carrito ya está vacío.");
+      return;
+    }
+
+    if (confirm("¿Estás seguro de que quieres vaciar el carrito?")) {
+      carrito.length = 0;
+      actualizarCarrito();
+    }
+
+  }
+
+
+  /* ==============================
+     FINALIZAR COMPRA
+  ================================ */
+
+  function finalizarCompra() {
+
+    if (carrito.length === 0) {
+      alert("🛒 Tu carrito está vacío. Agrega productos antes de finalizar la compra.");
+      return;
+    }
+
+    alert(
+      "🎉 ¡Pedido simulado confirmado!\n\n" +
+      "En un eCommerce real, ahora entrarían en acción " +
+      "el backend, la pasarela de pago y la logística."
+    );
+
+    carrito.length = 0;
+    actualizarCarrito();
+
+  }
+
+
+  /* ==============================
+     INICIAR TIENDA
+  ================================ */
+
+  mostrarProductos();
+  </script>
+
+  <script>
+  /* Botones de eras: clic para filtrar, clic de nuevo para ver todos */
+  document.querySelectorAll('.era').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var yaActivo = btn.classList.contains('activa');
+      document.querySelectorAll('.era').forEach(function (b) { b.classList.remove('activa'); });
+      if (yaActivo) {
+        filtrarPorEra('todas');
+      } else {
+        btn.classList.add('activa');
+        filtrarPorEra(btn.dataset.era);
+      }
+    });
+  });
+  </script>
+  </body>
+  </html>
+
+  <script>
+    /* ==============================
+       PRODUCTOS (12 eras, en orden cronológico)
+       Pega la URL de cada portada en "imagen"
+    ================================ */
+
+    const productos = [
+      {
+        id: 1,
+        era: "debut",
+        nombre: "Taylor Swift",
+        descripcion: "Donde empezó todo: country, guitarra y sueños. 💚",
+        precio: 150000,
+        imagen: "http://64.media.tumblr.com/00db750fa90c7c6f0ed0559d552e0ef8/74ec579b0269624e-cb/s1280x1920/f912c80900d91b12ad6cba3ea86e777161e017ab.jpg"
+      },
+      {
+        id: 2,
+        era: "fearless",
+        nombre: "Fearless",
+        descripcion: "Historias de cuento de hadas en dorado. 💛",
+        precio: 150000,
+        imagen: "https://i.pinimg.com/474x/15/e9/e2/15e9e2a961b7afa76abb1984bdc598ac.jpg"
+      },
+      {
+        id: 3,
+        era: "speak-now",
+        nombre: "Speak Now",
+        descripcion: "Escrito por ella sola, con magia morada. 💜",
+        precio: 150000,
+        imagen: "https://musicmayhemmagazine.com/wp-content/uploads/2023/05/Taylor-Swift-Photo-Courtesy-of-Terence-Rushin_Getty-Images-for-TS-4.jpg"
+      },
+      {
+        id: 4,
+        era: "red",
+        nombre: "Red",
+        descripcion: "Bufanda, otoño y corazones rotos. ❤️",
+        precio: 150000,
+        imagen: "https://media.tenor.com/VcG4iusBcewAAAAe/red-red-taylors-version.png"
+      },
+      {
+        id: 5,
+        era: "1989",
+        nombre: "1989",
+        descripcion: "Pop, nostalgia y clásicos que nunca pasan de moda. ✨",
+        precio: 150000,
+        imagen: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRG3LAqFI5W9uxjYe0RBVlea015RCTG2-rh-NpFhDJNonOxonNwYpWO60k&s=10"
+      },
+      {
+        id: 6,
+        era: "reputation",
+        nombre: "Reputation",
+        descripcion: "Un álbum icónico para los verdaderos swifties. 🐍✨",
+        precio: 150000,
+        imagen: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6UMS2gVOEcDZ6seF-UB-81ORsBgaMK8Ek2NwA4d3l6ILl831KhrChA_E&s=10"
+      },
+      {
+        id: 7,
+        era: "lover",
+        nombre: "Lover",
+        descripcion: "Rosa, celeste y mucho amor. 🩷💙",
+        precio: 150000,
+        imagen: "https://i.pinimg.com/564x/23/5c/99/235c99ba42a6a124e4c8aed6fd3f7c0f.jpg"
+      },
+      {
+        id: 8,
+        era: "folklore",
+        nombre: "Fólklore",
+        descripcion: "Un clásico que no puede faltar en tu colección. 🤎",
+        precio: 150000,
+        imagen: "https://i.pinimg.com/736x/b8/59/b6/b859b690060da5dd85364da358978742.jpg"
+      },
+      {
+        id: 9,
+        era: "evermore",
+        nombre: "Evermore",
+        descripcion: "La hermana de folklore, para invierno en el bosque. 🍂",
+        precio: 150000,
+        imagen: "https://64.media.tumblr.com/a288f47a3070d3d498a244b3741e3ed2/c36ed109ac6256ab-cd/s1280x1920/23db2ebc9c073b0839a89ebeda9c5bfdb4cbab8b.pnj"
+      },
+      {
+        id: 10,
+        era: "midnights",
+        nombre: "Midnights",
+        descripcion: "Noches, recuerdos y canciones que se sienten diferente. 💙",
+        precio: 150000,
+        imagen: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrM-L70Dxaokt-Lq85hhbE6mEKvkMjxVm08OUObInvPKBwCxf6kyLa5LA&s=10"
+      },
+      {
+        id: 11,
+        era: "ttpd",
+        nombre: "The Tortured Poets Department",
+        descripcion: "Poesía, drama y letras para subrayar. 🖋️",
+        precio: 150000,
+        imagen: "https://i.pinimg.com/736x/63/f6/e6/63f6e61c01020ae1b306e561f62db235.jpg"
+      },
+      {
+        id: 12,
+        era: "showgirl",
+        nombre: "The Life of a Showgirl: The Encore",
+        descripcion: "Brilla con uno de los álbumes más esperados. 💿💖",
+        precio: 150000,
+        imagen: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfnMXgSRD4CT6blkbVuJ7CywiPoW0_tU-EZca-udL_H74dA3FgUH2a9Ng&s=10"
+      }
+    ];
+
+
+    /* ==============================
+       CARRITO
+    ================================ */
+
+    const carrito = [];
+
+    const contenedorProductos = document.getElementById("productos");
+    const listaCarrito = document.getElementById("lista-carrito");
+    const totalCarrito = document.getElementById("total");
+
+    function formatoCOP(valor) {
+      return valor.toLocaleString("es-CO", {
+        style: "currency",
+        currency: "COP",
+        minimumFractionDigits: 0
+      });
+    }
+
+
+    /* ==============================
+       MOSTRAR PRODUCTOS (con filtro por era)
+    ================================ */
+
+    function mostrarProductos(era = "todas") {
+
+      contenedorProductos.innerHTML = "";
+
+      const lista = era === "todas"
+        ? productos
+        : productos.filter(p => p.era === era);
+
+      lista.forEach(prod => {
+
+        const div = document.createElement("div");
+        div.className = "producto";
+
+        div.innerHTML = `
+          ${prod.imagen
+            ? `<img src="${prod.imagen}" alt="${prod.nombre}">`
+            : `<div class="sin-imagen">💿</div>`}
+
+          <h3>${prod.nombre}</h3>
+
+          <p class="descripcion">${prod.descripcion}</p>
+
+          <p class="precio">${formatoCOP(prod.precio)}</p>
+
+          <button onclick="agregarAlCarrito(${prod.id})">
+            Agregar al carrito
+          </button>
+        `;
+
+        contenedorProductos.appendChild(div);
+
+      });
+
+    }
+
+    function filtrarPorEra(era) {
+      mostrarProductos(era);
+    }
+
+
+    /* ==============================
+       AGREGAR AL CARRITO
+    ================================ */
+
+    function agregarAlCarrito(id) {
+
+      const productoExistente = carrito.find(p => p.id === id);
+
+      if (productoExistente) {
+        productoExistente.cantidad++;
+      } else {
+        const producto = productos.find(p => p.id === id);
+        carrito.push({ ...producto, cantidad: 1 });
+      }
+
+      actualizarCarrito();
+
+    }
+
+
+    /* ==============================
+       ACTUALIZAR CARRITO
+    ================================ */
+
+    function actualizarCarrito() {
+
+      listaCarrito.innerHTML = "";
+
+      let total = 0;
+      let totalItems = 0;
+
+      carrito.forEach(item => {
+
+        const li = document.createElement("li");
+        const subtotal = item.precio * item.cantidad;
+
+        li.textContent = `${item.nombre} x${item.cantidad} — ${formatoCOP(subtotal)}`;
+
+        listaCarrito.appendChild(li);
+
+        total += subtotal;
+        totalItems += item.cantidad;
+
+      });
+
+      totalCarrito.textContent = total.toLocaleString("es-CO");
+
+      actualizarTituloCarrito(totalItems);
+
+    }
+
+
+    /* ==============================
+       CONTADOR DEL CARRITO
+    ================================ */
+
+    function actualizarTituloCarrito(cantidad) {
+      const titulo = document.querySelector(".carrito h2");
+      titulo.textContent = `🧾 Carrito de Compras (${cantidad})`;
+    }
+
+
+    /* ==============================
+       VACIAR CARRITO
+    ================================ */
+
+    function vaciarCarrito() {
+
+      if (carrito.length === 0) {
+        alert("🛒 El carrito ya está vacío.");
+        return;
+      }
+
+      if (confirm("¿Estás seguro de que quieres vaciar el carrito?")) {
+        carrito.length = 0;
+        actualizarCarrito();
+      }
+
+    }
+
+
+    /* ==============================
+       FINALIZAR COMPRA
+    ================================ */
+
+    function finalizarCompra() {
+
+      if (carrito.length === 0) {
+        alert("🛒 Tu carrito está vacío. Agrega productos antes de finalizar la compra.");
+        return;
+      }
+
+      alert(
+        "🎉 ¡Pedido simulado confirmado!\n\n" +
+        "En un eCommerce real, ahora entrarían en acción " +
+        "el backend, la pasarela de pago y la logística."
+      );
+
+      carrito.length = 0;
+      actualizarCarrito();
+
+    }
+
+
+    /* ==============================
+       INICIAR TIENDA
+    ================================ */
+
+    mostrarProductos();
+  </script>
+</body>
+</html>
